@@ -8,34 +8,35 @@ from sklearn.exceptions import InconsistentVersionWarning
 warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
 
-
 class CarPriceModel():
-    def __init__(self, label_file_path, onehot_file_path, pca_file_path, model_file_path):
-        self.label_encoder = self.load_label_encoder(label_file_path)
-        self.onehot_encoder = self.load_onehot_encoder(onehot_file_path)
-        self.pca_model = self.load_pca_model(pca_file_path)
-        self.model = self.load_model(model_file_path)
+    def __init__(self):
+        self.label_encoder = self.load_label_encoder()
+        self.onehot_encoder = self.load_onehot_encoder()
+        self.pca_model = self.load_pca_model()
+        self.model = self.load_model()
 
-    def load_label_encoder(self, label_file_path):
-        with open(label_file_path, 'rb') as f:
+        
+    def load_label_encoder(self):
+        with open(config.LABEL_FILE_PATH, 'rb') as f:
             label_encoder = pickle.load(f)
         return label_encoder
 
-    def load_onehot_encoder(self, onehot_file_path):
-        with open(onehot_file_path, 'rb') as f:
+    def load_onehot_encoder(self):
+        with open(config.ONEHOT_FILE_PATH, 'rb') as f:
             onehot_encoder = pickle.load(f)
         return onehot_encoder
-    
-    def load_pca_model(self, pca_file_path):
-        with open(pca_file_path, 'rb') as f:
+
+    def load_pca_model(self):
+        with open(config.PCA_FILE_PATH, 'rb') as f:
             pca_model = pickle.load(f)
         return pca_model
-    
-    def load_model(self, model_file_path):
-        with open(model_file_path, 'rb') as f:
+
+    def load_model(self):
+        with open(config.MODEL_FILE_PATH, 'rb') as f:
             model = pickle.load(f)
         return model
     
+
     def preprocess_data(self, df):
         # Apply one-hot encoding
         one_hot_cols = ['carbody', 'drivewheel', 'enginetype', 'cylindernumber', 'fuelsystem']
@@ -66,4 +67,3 @@ class CarPriceModel():
         # Make prediction
         predicted_price = self.model.predict(df_pca_array)[0]
         return predicted_price
-    
