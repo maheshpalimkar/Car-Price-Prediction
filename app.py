@@ -6,12 +6,7 @@ from utils import CarPriceModel
 
 app = Flask(__name__)
 
-label_file_path = config.label_file_path
-onehot_file_path = config.onehot_file_path
-pca_file_path = config.pca_file_path
-model_file_path = config.model_file_path
 
-car_price_model = CarPriceModel(label_file_path, onehot_file_path, pca_file_path, model_file_path)
 
 @app.route('/')
 def home():
@@ -25,6 +20,7 @@ def predict_price():
         df = pd.DataFrame(data, index=[0])
 
         # Make prediction using the model
+        car_price_model = CarPriceModel()
         predicted_price = car_price_model.predict_price(df)
 
         # Return the result
